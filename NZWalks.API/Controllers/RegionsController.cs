@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -128,9 +128,9 @@ namespace NZWalks.API.Controllers
             var regionsDomainModel = mapper.Map<Region>(updateRegionRequestDTO);
 
             //Check if region Exists using regionRepository
-            var regionDomainModel = await regionRepository.UpdateAsync(id, regionsDomainModel);
+            var ExistingRegionFromDomainModel = await regionRepository.UpdateAsync(id, regionsDomainModel);
 
-            if(regionDomainModel == null)
+            if(ExistingRegionFromDomainModel == null)
             {
                 return NotFound();
             }
@@ -145,7 +145,7 @@ namespace NZWalks.API.Controllers
             //};
 
             //Map Domain Model back to RegionDTO using AutoMapper
-            var regionsDto = mapper.Map<RegionDTO>(regionDomainModel);
+            var regionsDto = mapper.Map<RegionDTO>(ExistingRegionFromDomainModel);
 
             return Ok(regionsDto);
         }
@@ -154,7 +154,7 @@ namespace NZWalks.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteRegions(Guid id)
         {
-            //Check if region Exists using regionRepository
+            //Check if region Exists using regionRepository and delete directly
             var regionsDomainModel = await regionRepository.DeleteAsync(id);
 
             //Map Domain Model back to RegionDTO
