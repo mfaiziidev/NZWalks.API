@@ -24,12 +24,12 @@ namespace NZWalks.API.Repositries
 
         public async Task<List<Walk>> GetAllAsync()
         {
-            return await dbContext.Walks.ToListAsync();
+            return await dbContext.Walks.Include(x => x.Region).Include(x => x.Difficulty).ToListAsync();
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)
         {
-            return await dbContext.Walks.FirstOrDefaultAsync(x => x.id == id);
+            return await dbContext.Walks.Include(x => x.Region).Include(x => x.Difficulty).FirstOrDefaultAsync(x => x.id == id);
         }
 
         public async Task<Walk?> UpdateAsync(Walk walks, Guid id)
