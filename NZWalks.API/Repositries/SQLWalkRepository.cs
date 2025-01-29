@@ -50,7 +50,7 @@ namespace NZWalks.API.Repositries
                 }
             }
 
-            //Pagination
+            //Pagination 
             var SkipResult = (PageNo - 1) * PageSize;
 
             return await walks.Skip(SkipResult).Take(PageSize).ToListAsync();
