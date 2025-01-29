@@ -40,10 +40,10 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllWalk")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
         {
             //Get Data from Repository First
-            var WalkDomainModel = await walkRepository.GetAllAsync();
+            var WalkDomainModel = await walkRepository.GetAllAsync(filterOn, filterQuery);
 
             //Map WalkDomainModel to DTO using AutoMapper
             var WalkDTO = mapper.Map<List<WalkDTO>>(WalkDomainModel);
