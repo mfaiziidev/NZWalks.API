@@ -21,16 +21,24 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPost]
+        [Route("/api/AddDifficulty")]
         public async Task<IActionResult> Create([FromBody] AddDifficultyRequestDTO addDifficultyRequestDTO)
         {
-            var difficultyDomainModel = mapper.Map<Difficulty>(addDifficultyRequestDTO);
-
-            var difficultyData = await difficultyRepository.CreateAsync(difficultyDomainModel);
-            var DifficultyDTO = mapper.Map<DifficultyDTO>(difficultyData);
-            return Ok(DifficultyDTO);
+            if (ModelState.IsValid)
+            {
+                var difficultyDomainModel = mapper.Map<Difficulty>(addDifficultyRequestDTO);
+                var difficultyData = await difficultyRepository.CreateAsync(difficultyDomainModel);
+                var DifficultyDTO = mapper.Map<DifficultyDTO>(difficultyData);
+                return Ok(DifficultyDTO);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpGet]
+        [Route("/api/GetAllDifficulty")]
         public async Task<IActionResult> GetAll()
         {
             var DifficultyDomainModel = await difficultyRepository.GetAllAsync();
@@ -39,7 +47,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("/api/GetDifficultyByID{id}")]
         public async Task<IActionResult> GetDifficultyById(Guid id)
         {
             var DifficultyDomainModel = await difficultyRepository.GetDifficultyByIdAsync(id);
@@ -48,21 +56,25 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("/api/UpdateDifficulty/{id}")]
         public async Task<IActionResult> UpdateDifficulty(Guid id, [FromBody] UpdateDifficultyRequestDTO updateDifficultyRequestDTO)
         {
-            var DifficultyDomainModel = mapper.Map<Difficulty>(updateDifficultyRequestDTO);
+            if (ModelState.IsValid) 
+            {
+                var DifficultyDomainModel = mapper.Map<Difficulty>(updateDifficultyRequestDTO);
 
-            var UpdatedDifficulty = await difficultyRepository.UpdateAsync(DifficultyDomainModel, id);
-            if (UpdatedDifficulty == null)
-            { return NotFound(); }
+                var UpdatedDifficulty = await difficultyRepository.UpdateAsync(DifficultyDomainModel, id);
+                if (UpdatedDifficulty == null)
+                { return NotFound(); }
 
-            var difficultyDTO = mapper.Map<DifficultyDTO>(UpdatedDifficulty);
-            return Ok(difficultyDTO);
+                var difficultyDTO = mapper.Map<DifficultyDTO>(UpdatedDifficulty);
+                return Ok(difficultyDTO);
+            }
+            else {return BadRequest(ModelState); }
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("/api/DeleteDifficulty/{id}")]
         public async Task<IActionResult> DeleteDifficulty(Guid id)
         {
             var DeletedDifficulty = await difficultyRepository.DeleteAsync(id);

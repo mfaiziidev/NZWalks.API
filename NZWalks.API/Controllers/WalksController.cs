@@ -21,21 +21,26 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPost]
+        [Route("/api/AddWalk")]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDTO addWalkRequestDTO)
         {
-            //Map DTO to DomainModel using autoMapper
-            var WalkDomainModel = mapper.Map<Walk>(addWalkRequestDTO);
+            if (ModelState.IsValid)
+            { //Map DTO to DomainModel using autoMapper
+                var WalkDomainModel = mapper.Map<Walk>(addWalkRequestDTO);
 
-            //Call WalkRepository to Create Walks
-            await walkRepository.CreateAsync(WalkDomainModel);
+                //Call WalkRepository to Create Walks
+                await walkRepository.CreateAsync(WalkDomainModel);
 
-            //Map DomainModel back to DTO using AutoMapper
-            var WalkDTO = mapper.Map<WalkDTO>(WalkDomainModel);
+                //Map DomainModel back to DTO using AutoMapper
+                var WalkDTO = mapper.Map<WalkDTO>(WalkDomainModel);
 
-            return Ok(WalkDTO);
+                return Ok(WalkDTO);
+            }
+            else { return BadRequest(ModelState); }
         }
 
         [HttpGet]
+        [Route("/api/GetAllWalk")]
         public async Task<IActionResult> GetAll()
         {
             //Get Data from Repository First
@@ -48,7 +53,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("/api/GetWalkById/{id}")]
         public async Task<IActionResult> GetWalksbyId(Guid id)
         {
             //Get Data from Repository First
@@ -66,25 +71,30 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("/api/UpdateWalk/{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateWalkRequestDTO updateWalkRequestDTO)
         {
-            //Map DTOs to WalkDomainModel using AutoMapper
-            var WalkDomainModel = mapper.Map<Walk>(updateWalkRequestDTO);
+            if (ModelState.IsValid)
+            {
+                //Map DTOs to WalkDomainModel using AutoMapper
+                var WalkDomainModel = mapper.Map<Walk>(updateWalkRequestDTO);
 
-            //Check if Walk Exists using regionRepository
-            var ExistingWalkFromDomainModel = await walkRepository.UpdateAsync(WalkDomainModel, id);
+                //Check if Walk Exists using regionRepository
+                var ExistingWalkFromDomainModel = await walkRepository.UpdateAsync(WalkDomainModel, id);
 
-            if(ExistingWalkFromDomainModel == null)
-            {  return NotFound(); }
+                if (ExistingWalkFromDomainModel == null)
+                { return NotFound(); }
 
-            //Map WalkDomainModel to DTO using AutoMapper
-            var WalkDTO = mapper.Map<WalkDTO>(ExistingWalkFromDomainModel);
-            return Ok(WalkDTO);
+                //Map WalkDomainModel to DTO using AutoMapper
+                var WalkDTO = mapper.Map<WalkDTO>(ExistingWalkFromDomainModel);
+                return Ok(WalkDTO);
+            }
+
+            else { return BadRequest(ModelState); }
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("/api/DeleteWalk/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             //Check if Walk Exists using regionRepository and delete directly
