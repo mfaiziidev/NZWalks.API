@@ -11,7 +11,7 @@ namespace NZWalks.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    
     public class DifficultyController : ControllerBase
     {
         private readonly IDifficultyRepository difficultyRepository;
@@ -26,6 +26,7 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         [Route("/api/AddDifficulty")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddDifficultyRequestDTO addDifficultyRequestDTO)
         {
             var difficultyDomainModel = mapper.Map<Difficulty>(addDifficultyRequestDTO);
@@ -36,6 +37,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllDifficulty")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
             var DifficultyDomainModel = await difficultyRepository.GetAllAsync();
@@ -45,6 +47,8 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetDifficultyByID{id}")]
+        [Authorize(Roles = "Reader")]
+
         public async Task<IActionResult> GetDifficultyById(Guid id)
         {
             var DifficultyDomainModel = await difficultyRepository.GetDifficultyByIdAsync(id);
@@ -55,6 +59,8 @@ namespace NZWalks.API.Controllers
         [HttpPut]
         [Route("/api/UpdateDifficulty/{id}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
+
         public async Task<IActionResult> UpdateDifficulty(Guid id, [FromBody] UpdateDifficultyRequestDTO updateDifficultyRequestDTO)
         {
             var DifficultyDomainModel = mapper.Map<Difficulty>(updateDifficultyRequestDTO);
@@ -69,6 +75,8 @@ namespace NZWalks.API.Controllers
 
         [HttpDelete]
         [Route("/api/DeleteDifficulty/{id}")]
+        [Authorize(Roles = "Writer")]
+
         public async Task<IActionResult> DeleteDifficulty(Guid id)
         {
             var DeletedDifficulty = await difficultyRepository.DeleteAsync(id);
