@@ -59,7 +59,7 @@ namespace NZWalks.API.Controllers
         [HttpPut]
         [Route("/api/UpdateDifficulty/{id}")]
         [ValidateModel]
-        [Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer, Reader")]
 
         public async Task<IActionResult> UpdateDifficulty(Guid id, [FromBody] UpdateDifficultyRequestDTO updateDifficultyRequestDTO)
         {
@@ -75,7 +75,7 @@ namespace NZWalks.API.Controllers
 
         [HttpDelete]
         [Route("/api/DeleteDifficulty/{id}")]
-        [Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer, Reader")]
 
         public async Task<IActionResult> DeleteDifficulty(Guid id)
         {
