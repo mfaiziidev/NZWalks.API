@@ -6,6 +6,7 @@ using NZWalks.API.CustomValidationAttribute;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositries.IRepository;
+using System.Text.Json;
 
 namespace NZWalks.API.Controllers
 {
@@ -16,11 +17,13 @@ namespace NZWalks.API.Controllers
     {
         private readonly IDifficultyRepository difficultyRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<DifficultyController> logger;
 
-        public DifficultyController(IDifficultyRepository difficultyRepository, IMapper mapper)
+        public DifficultyController(IDifficultyRepository difficultyRepository, IMapper mapper, ILogger<DifficultyController> logger)
         {
             this.difficultyRepository = difficultyRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpPost]
@@ -37,10 +40,12 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllDifficulty")]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
+            logger.LogInformation("Get All Difficulties action method Invoked"); // Console Logging
             var DifficultyDomainModel = await difficultyRepository.GetAllAsync();
+            logger.LogInformation($"Data coming from DB is: {JsonSerializer.Serialize(DifficultyDomainModel)}"); // Console Logging
             var difficultyDTO = mapper.Map<List<DifficultyDTO>>(DifficultyDomainModel);            
             return Ok(difficultyDTO);
         }
