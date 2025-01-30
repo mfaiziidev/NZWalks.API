@@ -6,6 +6,7 @@ using NZWalks.API.Repositries;
 using NZWalks.API.Repositries.IRepository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,18 +17,40 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Setting up DbContext For Data
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Setting up DbContext for Authentication
 builder.Services.AddDbContext<NZWalkAuthContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Setting up Repositories
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddScoped<IDifficultyRepository, SQLDifficultyRepository>();
 
+// Setting up Auto Mapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
+// Setting up Identity
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NZWalks")
+    .AddEntityFrameworkStores<NZWalkAuthContext>()
+    .AddDefaultTokenProviders();
+
+// Setting up Password Format
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+
+});
+
+// Setting up Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
@@ -35,7 +58,6 @@ if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.Is
 {
     throw new InvalidOperationException("JWT configuration values are missing or incorrect.");
 }
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer( options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
