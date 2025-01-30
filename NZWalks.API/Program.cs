@@ -29,6 +29,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddScoped<IDifficultyRepository, SQLDifficultyRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 // Setting up Auto Mapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));

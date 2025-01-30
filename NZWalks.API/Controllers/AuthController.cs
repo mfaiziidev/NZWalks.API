@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.DTO;
+using NZWalks.API.Repositries.IRepository;
 
 namespace NZWalks.API.Controllers
 {
@@ -10,10 +11,12 @@ namespace NZWalks.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
+        public ITokenRepository TokenRepository { get; }
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             this.userManager = userManager;
+            TokenRepository = tokenRepository;
         }
 
 
@@ -45,6 +48,37 @@ namespace NZWalks.API.Controllers
                 }
             }
             return BadRequest("Something wentwrong while creating User");
+        }
+
+
+        [HttpPost]
+        [Route("/api/Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
+        {
+            var user = await userManager.FindByEmailAsync(loginRequestDTO.Username);
+            if (user != null)
+            {
+                var checkPasswordResult = await userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
+
+                if(checkPasswordResult)
+                {
+                    //Get Roles
+                    var roles = await userManager.GetRolesAsync(user);
+
+                    if (roles != null) 
+                    {
+                        var token = TokenRepository.CreateJWTToken(user, roles.ToList());
+                        var response = new LoginResponseDTO
+                        {
+                            JwtToken = token
+                        };
+
+                        return Ok(response);
+                    }
+                    
+                }
+            }
+            return BadRequest("Incorrect Username or Password");
         }
     }
 }
