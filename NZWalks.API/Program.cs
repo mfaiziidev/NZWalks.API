@@ -68,7 +68,9 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 // Setting up Repositories
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+//builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
 builder.Services.AddScoped<IDifficultyRepository, SQLDifficultyRepository>();
+builder.Services.AddScoped<IRoleRepository, SQLRoleRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 // Setting up Auto Mapper
@@ -120,7 +122,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+//app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -15,29 +15,29 @@ namespace NZWalks.API.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            try
-            {
-                await next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                var errorId = Guid.NewGuid();
+            //try
+            //{
+            //    await next(httpContext);
+            //}
+            //catch (Exception ex)
+            //{
+            //    var errorId = Guid.NewGuid();
 
-                //log this exception
-                logger.LogError(ex, $"{errorId} : {ex.Message}");
+            //    //log this exception
+            //    logger.LogError(ex, $"{errorId} : {ex.Message}");
 
-                //Return a custom error response
-                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                httpContext.Response.ContentType = "application/json";
+            //    //Return a custom error response
+            //    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            //    httpContext.Response.ContentType = "application/json";
 
-                var error = new
-                {
-                    Id = errorId,
-                    ErrorMessage = "Something went wrong, we are looking to resolve this",
-                };
+            //    var error = new
+            //    {
+            //        Id = errorId,
+            //        ErrorMessage = "Something went wrong, we are looking to resolve this",
+            //    };
 
-                await httpContext.Response.WriteAsJsonAsync(error);
-            }
+            //    await httpContext.Response.WriteAsJsonAsync(error);
+            //}
         }
     }
 }

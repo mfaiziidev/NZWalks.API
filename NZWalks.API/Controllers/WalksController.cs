@@ -42,7 +42,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllWalk")]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, 
             [FromQuery] string? SortBy, [FromQuery] bool? isAscending, [FromQuery] int PageNo = 1, [FromQuery] int PageSize = 10)
         {
