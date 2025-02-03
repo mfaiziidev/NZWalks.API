@@ -56,12 +56,12 @@ namespace NZWalks.API.Repositries
             return await walks.Skip(SkipResult).Take(PageSize).ToListAsync();
         }
 
-        public async Task<Walk?> GetByIdAsync(Guid id)
+        public async Task<Walk?> GetByIdAsync(int id)
         {
             return await dbContext.Walks.Include(x => x.Region).Include(x => x.Difficulty).FirstOrDefaultAsync(x => x.id == id);
         }
 
-        public async Task<Walk?> UpdateAsync(Walk walks, Guid id)
+        public async Task<Walk?> UpdateAsync(Walk walks, int id)
         {
             var existingWalkData = await dbContext.Walks.FirstOrDefaultAsync(x => x.id == id);
 
@@ -81,7 +81,7 @@ namespace NZWalks.API.Repositries
             return existingWalkData;
         }
 
-        public async Task<Walk?> DeleteByIdAsync(Guid id)
+        public async Task<Walk?> DeleteByIdAsync(int id)
         {
             var existingWalkData = await dbContext.Walks.FirstOrDefaultAsync(x => x.id == id);
 

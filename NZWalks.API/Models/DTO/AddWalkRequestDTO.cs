@@ -13,7 +13,7 @@ namespace NZWalks.API.Models.DTO
         [Required, Range(0, 50)]
         public double LengthInKm { get; set; }
         public string? WalkImageURL { get; set; }
-        public Guid DifficultyId { get; set; }
-        public Guid RegionId { get; set; }
+        public int DifficultyId { get; set; }
+        public int RegionId { get; set; }
     }
 }

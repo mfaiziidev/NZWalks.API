@@ -2,7 +2,7 @@
 {
     public class Difficulty
     {
-        public Guid id { get; set; }
+        public int id { get; set; }
         public string Name { get; set; }
     }
 }

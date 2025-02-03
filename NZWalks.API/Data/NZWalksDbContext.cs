@@ -12,8 +12,8 @@ namespace NZWalks.API.Data
         public DbSet<Difficulty> Difficulties { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Walk> Walks { get; set; }
-        //public DbSet<User> Users { get; set; }
-        public DbSet<Role> Role { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

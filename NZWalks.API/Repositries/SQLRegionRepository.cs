@@ -20,7 +20,7 @@ namespace NZWalks.API.Repositries
             return await dbContext.Regions.ToListAsync();
         }
 
-        public async Task<Region?> GetByIdAsync(Guid id)
+        public async Task<Region?> GetByIdAsync(int id)
         {
             return await dbContext.Regions.FirstOrDefaultAsync(x => x.id == id);
         }
@@ -32,7 +32,7 @@ namespace NZWalks.API.Repositries
             return region;
         }
 
-        public async Task<Region?> UpdateAsync(Guid id, Region region)
+        public async Task<Region?> UpdateAsync(int id, Region region)
         {
             var existingRegion = await dbContext.Regions.FirstOrDefaultAsync(x => x.id == id);
 
@@ -48,7 +48,7 @@ namespace NZWalks.API.Repositries
             await dbContext.SaveChangesAsync();
             return existingRegion;
         }
-        public async Task<Region?> DeleteAsync(Guid id)
+        public async Task<Region?> DeleteAsync(int id)
         {
             var existingRegion = await dbContext.Regions.FirstOrDefaultAsync(x => x.id == id);
             if (existingRegion == null)

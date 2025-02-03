@@ -16,14 +16,14 @@ namespace NZWalks.API.Repositries
 
         public async Task<Role> CreateAsync(Role role)
         {
-            dbContext.Role.Add(role);
+            dbContext.Roles.Add(role);
             await dbContext.SaveChangesAsync();
             return role;
         }
 
         public async Task<List<Role>> GetAllAsync()
         {
-            return await dbContext.Role.ToListAsync();
+            return await dbContext.Roles.ToListAsync();
         }
     }
 }

@@ -2,13 +2,13 @@
 {
     public class Walk
     {
-        public Guid id { get; set; }
+        public int id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public double LengthInKm { get; set; }
         public string? WalkImageURL { get; set; }
-        public Guid DifficultyId { get; set; }
-        public Guid RegionId { get; set; }
+        public int DifficultyId { get; set; }
+        public int RegionId { get; set; }
 
 
         // Navigation Properties

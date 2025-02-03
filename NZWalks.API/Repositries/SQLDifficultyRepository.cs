@@ -25,12 +25,12 @@ namespace NZWalks.API.Repositries
             return await dbContext.Difficulties.ToListAsync();
         }
 
-        public async Task<Difficulty?> GetDifficultyByIdAsync(Guid id)
+        public async Task<Difficulty?> GetDifficultyByIdAsync(int id)
         {
             return await dbContext.Difficulties.FirstOrDefaultAsync(x => x.id == id);
         }
 
-        public async Task<Difficulty?> UpdateAsync(Difficulty difficulty, Guid id)
+        public async Task<Difficulty?> UpdateAsync(Difficulty difficulty, int id)
         {
             var ExistingDifficulty = await dbContext.Difficulties.FirstOrDefaultAsync(x => x.id == id);
             if (ExistingDifficulty == null)
@@ -43,7 +43,7 @@ namespace NZWalks.API.Repositries
             return difficulty;
         }
 
-        public async Task<Difficulty?> DeleteAsync(Guid id)
+        public async Task<Difficulty?> DeleteAsync(int id)
         {
             var ExistingDifficulty = await dbContext.Difficulties.FirstOrDefaultAsync(x => x.id == id);
             if (ExistingDifficulty == null)
