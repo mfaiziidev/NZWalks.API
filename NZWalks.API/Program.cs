@@ -71,6 +71,7 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
 builder.Services.AddScoped<IDifficultyRepository, SQLDifficultyRepository>();
 builder.Services.AddScoped<IRoleRepository, SQLRoleRepository>();
+builder.Services.AddScoped<IAuthRepository, SQLAuthRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 // Setting up Auto Mapper
