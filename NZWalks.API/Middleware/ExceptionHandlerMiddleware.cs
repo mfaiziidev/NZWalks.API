@@ -15,29 +15,42 @@ namespace NZWalks.API.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            //try
-            //{
-            //    await next(httpContext);
-            //}
-            //catch (Exception ex)
-            //{
-            //    var errorId = Guid.NewGuid();
+            try
+            {
+                // Proceed to the next middleware
+                await next(httpContext);
+            }
+            catch (Exception ex)
+            {
+                var errorId = Guid.NewGuid();
 
-            //    //log this exception
-            //    logger.LogError(ex, $"{errorId} : {ex.Message}");
+                try
+                {
+                    // Log the exception details
+                    logger.LogError(ex, $"{errorId} : {ex.Message}");
+                }
+                catch (Exception logEx)
+                {
+                    // Handle logging failure (in case the logging itself fails)
+                    Console.WriteLine("Logging failed: " + logEx.Message);
+                }
 
-            //    //Return a custom error response
-            //    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            //    httpContext.Response.ContentType = "application/json";
+                // Return a custom error response
+                if (!httpContext.Response.HasStarted)
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    httpContext.Response.ContentType = "application/json";
 
-            //    var error = new
-            //    {
-            //        Id = errorId,
-            //        ErrorMessage = "Something went wrong, we are looking to resolve this",
-            //    };
+                    var error = new
+                    {
+                        Id = errorId,
+                        ErrorMessage = "Something went wrong, we are looking to resolve this",
+                    };
 
-            //    await httpContext.Response.WriteAsJsonAsync(error);
-            //}
+                    // Safely write the error response
+                    await httpContext.Response.WriteAsJsonAsync(error);
+                }
+            }
         }
     }
 }
