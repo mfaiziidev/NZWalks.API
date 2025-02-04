@@ -25,8 +25,8 @@ namespace NZWalks.API.Controllers
 
         [HttpPost]
         [Route("/api/AddRole")]
-        //[ValidateModel]
-        //[Authorize(Roles = "Writer")]
+        [ValidateModel]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] AddRoleRequestDTO addRoleRequestDTO)
         {
             var roleDomainModel = mapper.Map<Role>(addRoleRequestDTO);
@@ -37,7 +37,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllRole")]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetAll()
         {
             //logger.LogInformation("Get All Difficulties action method Invoked"); // Console Logging

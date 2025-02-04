@@ -25,7 +25,7 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         [Route("/api/AddWalk")]
         //[ValidateModel]
-        //[Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDTO addWalkRequestDTO)
         {
             //Map DTO to DomainModel using autoMapper
@@ -42,7 +42,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllWalk")]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, 
             [FromQuery] string? SortBy, [FromQuery] bool? isAscending, [FromQuery] int PageNo = 1, [FromQuery] int PageSize = 10)
         {
@@ -57,7 +57,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetWalkById/{id}")]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetWalksbyId(int id)
         {
             //Get Data from Repository First
@@ -76,7 +76,7 @@ namespace NZWalks.API.Controllers
 
         [HttpPut]
         [Route("/api/UpdateWalk/{id}")]
-        //[Authorize(Roles = "Writer, Reader")]
+        [Authorize(Roles = "Admin")]
         //[ValidateModel]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateWalkRequestDTO updateWalkRequestDTO)
         {
@@ -96,7 +96,7 @@ namespace NZWalks.API.Controllers
 
         [HttpDelete]
         [Route("/api/DeleteWalk/{id}")]
-        //[Authorize(Roles = "Writer, Reader")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             //Check if Walk Exists using regionRepository and delete directly

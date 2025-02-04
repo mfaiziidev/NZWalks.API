@@ -61,9 +61,10 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Setting up DbContext for Authentication
+// Registering the Identity DbContext
 builder.Services.AddDbContext<NZWalkAuthContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // Setting up Repositories
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
@@ -77,7 +78,7 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 // Setting up Auto Mapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
-// Setting up Identity
+//Setting up Identity
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NZWalks")

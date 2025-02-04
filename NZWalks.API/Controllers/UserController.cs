@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.Domain;
@@ -22,6 +23,7 @@ namespace NZWalks.API.Controllers
 
         [HttpPost]
         [Route("/api/AddUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] AddUserRequestDTO addUserRequestDTO)
         {
             var UserDomainModel = mapper.Map<User>(addUserRequestDTO);
@@ -33,6 +35,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUser()
         {
             var UserDomainModel = await userRepository.GetAllAsync();
@@ -43,6 +46,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetUserById/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUser(int id)
         {
             var UserDomainModel = await userRepository.GetByIdAsync(id);
@@ -53,6 +57,7 @@ namespace NZWalks.API.Controllers
 
         [HttpPut]
         [Route("/api/UpdateUserById/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUserById(int id, [FromBody] UpdateUserRequestDTO updateUserRequestDTO)
         {
             var UserDomainModel = mapper.Map<User>(updateUserRequestDTO);
@@ -64,6 +69,7 @@ namespace NZWalks.API.Controllers
 
         [HttpDelete]
         [Route("/api/DeleteUser/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var UserDomainModelData = await userRepository.DeleteUserAsync(id);

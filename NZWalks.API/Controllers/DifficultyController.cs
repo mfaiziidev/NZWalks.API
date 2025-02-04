@@ -29,7 +29,7 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         [Route("/api/AddDifficulty")]
         [ValidateModel]
-        //[Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] AddDifficultyRequestDTO addDifficultyRequestDTO)
         {
             var difficultyDomainModel = mapper.Map<Difficulty>(addDifficultyRequestDTO);
@@ -40,7 +40,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetAllDifficulty")]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> GetAll()
         {
             logger.LogInformation("Get All Difficulties action method Invoked"); // Console Logging
@@ -52,7 +52,7 @@ namespace NZWalks.API.Controllers
 
         [HttpGet]
         [Route("/api/GetDifficultyByID{id}")]
-        //[Authorize(Roles = "Reader")]
+        [Authorize(Roles = "Admin, User")]
 
         public async Task<IActionResult> GetDifficultyById(int id)
         {
@@ -63,8 +63,8 @@ namespace NZWalks.API.Controllers
 
         [HttpPut]
         [Route("/api/UpdateDifficulty/{id}")]
-        //[ValidateModel]
-        //[Authorize(Roles = "Writer, Reader")]
+        [ValidateModel]
+        [Authorize(Roles = ("Admin"))]
 
         public async Task<IActionResult> UpdateDifficulty(int id, [FromBody] UpdateDifficultyRequestDTO updateDifficultyRequestDTO)
         {
@@ -80,7 +80,7 @@ namespace NZWalks.API.Controllers
 
         [HttpDelete]
         [Route("/api/DeleteDifficulty/{id}")]
-        //[Authorize(Roles = "Writer, Reader")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> DeleteDifficulty(int id)
         {
