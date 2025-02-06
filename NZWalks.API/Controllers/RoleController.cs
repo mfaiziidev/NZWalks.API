@@ -32,7 +32,7 @@ namespace NZWalks.API.Controllers
             var roleDomainModel = mapper.Map<Role>(addRoleRequestDTO);
             var roleData = await roleRepository.CreateAsync(roleDomainModel);
             var RoleDTO = mapper.Map<RoleDTO>(roleData);
-            return Ok(RoleDTO);
+            return Ok(RoleDTO); 
         }
 
         [HttpGet]
